@@ -3,7 +3,6 @@ package demo;
 public class Main {
 
 	public static void main(String[] args) throws InterruptedException {
-		
 		MyAction obj = new MyAction();
 		
 		obj.initDriver();  // Browser initiation...

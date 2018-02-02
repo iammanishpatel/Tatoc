@@ -1,9 +1,13 @@
 package demo;
 
+import java.util.Iterator;
+import java.util.Set;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
 
 public class DriverFactory {
 	
@@ -41,16 +45,28 @@ public class DriverFactory {
 		elementByTagName(clickByTagName).click();;
 	}
 	
-	void sendByXpath(String sendByXpath){
-		elementByXpath(sendByXpath).sendKeys();;
+	String getTextByXpath(String getTextByXpath){
+		return elementByXpath(getTextByXpath).getText();
 	}
 	
-	void sendByCssSelector(String sendByCssSelector){
-		elementByCssSelector(sendByCssSelector).sendKeys();;
+	String getTextByCssSelector(String getTextByCssSelector){
+		return elementByCssSelector(getTextByCssSelector).getText();
 	}
 	
-	void sendByTagName(String sendByTagName){
-		elementByTagName(sendByTagName).sendKeys();;
+	String getTextByTagName(String getTextByTagName){
+		return elementByTagName(getTextByTagName).getText();
+	}
+	
+	void sendByXpath(String sendByXpath,String content){
+		elementByXpath(sendByXpath).sendKeys(content);;
+	}
+	
+	void sendByCssSelector(String sendByCssSelector,String content){
+		elementByCssSelector(sendByCssSelector).sendKeys(content);;
+	}
+	
+	void sendByTagName(String sendByTagName,String content){
+		elementByTagName(sendByTagName).sendKeys(content);;
 	}
 	
 	void switchToFrameByName(String frameName){
@@ -64,8 +80,34 @@ public class DriverFactory {
 	int iframeSize(){
 		return driver.findElements(By.tagName("iframe")).size();
 	}
+	
 	void switchToDefaultFrame(){
 		driver.switchTo().parentFrame();
 	}
+	
+	void dragAndDrop(WebElement dg,WebElement dp) throws InterruptedException{
+		Thread.sleep(1000);
+		Actions action = new Actions(driver);
+		action.dragAndDrop(dg, dp).perform();
+		
+	}
+	
+	void switchToWindow(){
+		//String parentWindow=driver.getWindowHandle();
+		String childWindow="";
+		Set<String> subWindow=driver.getWindowHandles();
+		Iterator<String> itr = subWindow.iterator();
+		while (itr.hasNext()){
+			childWindow = itr.next();
+        }
+		driver.switchTo().window(childWindow);
+		//driver.switchTo().window(parentWindow);
+	}
+	
+	void cookie(String key,String cookieValue){
+		Cookie c = new Cookie(key, cookieValue);
+		driver.manage().addCookie(c);
+	}
+
 }
 
